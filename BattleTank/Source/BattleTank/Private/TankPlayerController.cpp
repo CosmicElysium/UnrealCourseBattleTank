@@ -19,14 +19,22 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AimTowardsCrosshair();
+	//UE_LOG(LogTemp, Warning, TEXT("ticked!"));
+	return;
+}
+
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetControlledTank()) { return; }
 	FVector HitLocation; // Out parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
-
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 
@@ -43,6 +51,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	{
 		return GetLookVectorHitLocation(CameraLookDirection, OutHitLocation);
 	}
+	OutHitLocation = FVector(0);
 	return false;
 }
 
@@ -67,15 +76,6 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	FVector CameraWorldLocation;
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, CameraLookDirection);
 
-}
-
-void ATankPlayerController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	AimTowardsCrosshair();
-	//UE_LOG(LogTemp, Warning, TEXT("ticked!"));
-	return;
 }
 
 
