@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine\World.h"
 
 
 
@@ -37,10 +38,24 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	FVector2D ScreenLocation = FVector2D(
 		CrossHairXLocation * ViewportSizeX,
 		CrossHairYLocation * ViewportSizeY);
-	UE_LOG(LogTemp, Warning, TEXT("ScreenLocation: %s"), *ScreenLocation.ToString());
+	FVector CameraLookDirection;
+	if (GetLookDirection(ScreenLocation, CameraLookDirection))
+	{
+		return GetLookVectorHitLocation(CameraLookDirection, OutHitLocation);
+	}
+	return false;
+}
 
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const
+{
+	GetWorld()->LineTraceByChannel();
+}
 
-	return true;
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& CameraLookDirection) const
+{
+	FVector CameraWorldLocation;
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldLocation, CameraLookDirection);
+
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
