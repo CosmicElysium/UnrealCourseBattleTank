@@ -24,7 +24,7 @@ private:
 	float CrossHairYLocation = 0.33333;
 
 	UPROPERTY(EditAnywhere)
-	int LineTraceRange = 10;
+	int LineTraceRange = 1000000;
 	
 	virtual void Tick(float) override;
 
