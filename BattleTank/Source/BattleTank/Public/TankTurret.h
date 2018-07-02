@@ -19,6 +19,6 @@ public:
 	void Rotate(float RelativeSpeed); // -1 is max anticlock speed and +1 is max clock speed
 
 private:
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float MaxDegreesPerSecond = 25;
 };
