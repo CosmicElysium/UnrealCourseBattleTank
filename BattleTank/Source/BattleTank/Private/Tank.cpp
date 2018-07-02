@@ -20,17 +20,16 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: Projectile fired!"), Time);
 
 	if (!Barrel) { return; }
 
 	// Spawn projectile at socket on barrel
-	GetWorld()->SpawnActor<AProjectile>(
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 		ProjectileBlueprint,
 		Barrel->GetSocketLocation(FName("Projectile")),
 		Barrel->GetSocketRotation(FName("Projectile")));
 
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
 
 // Sets default values
@@ -41,6 +40,7 @@ ATank::ATank()
 
 	// No need to protect points as added at construction
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+
 }
 
 // Called when the game starts or when spawned
